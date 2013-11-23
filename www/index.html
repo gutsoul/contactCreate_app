@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="
+			user-scalable=no, 
+			initial-scale=1, 
+			maximum-scale=1, 
+			minimum-scale=1, 
+			width=device-width, 
+			height=device-height, 
+			target-densitydpi=device-dpi" />
+        <title>Contact Create</title>
+		<script type="text/javascript" src="js/jquery.min.js"></script>
+		<script type="text/javascript" src="phonegap.js"></script>
+		<script type="text/javascript" charset="utf-8">
+		document.addEventListener("deviceready", onDeviceReady, false);
+		function onDeviceReady() {
+		};
+		function onSuccess(contact) {
+			alert("已建立了Created!");
+		};
+
+		function onError(contactError) {
+			alert("失敗原因err : " + contactError.code);
+		};		
+		function AddContact(){
+			var phoneNumbers = [];
+			phoneNumbers[0] = new ContactField('mobile', $("#phoneNumbers").val(), true);
+			
+			var name = new ContactName();
+			name.givenName = $("#givenName").val();
+			name.familyName = $("#familyName").val();
+			
+			var emails = new ContactField();
+			emails.value = $("#emails").val();
+			
+			var myContact = navigator.contacts.create({
+				"displayName": $("#displayName").val()
+				});
+				
+			myContact.name = name;
+			myContact.phoneNumbers = phoneNumbers;
+			myContact.note = "PhoneGap Contact Create.";
+			myContact.save(onSuccess,onError);
+			console.log(myContact);
+		};
+
+        </script>
+		<style>
+			body {
+				font-size:26px;
+			}
+			
+			input, button {
+				padding: 16px;
+				font-size:26px;
+			}
+		</style>
+    </head>
+    <body>
+		<div>
+			顯示名稱displayName：<input type="text" id="displayName" name="displayName" size="12" />
+		</div>
+		<div>
+			姓familyName：<input type="text" id="familyName" name="familyName" size="6" /> 名givenName：<input type="text" id="givenName" name="givenName" size="8" />
+		</div>
+		<div>
+			手機phoneNumber：<input type="text" id="phoneNumbers" name="phoneNumbers" />
+		</div>
+		<div>
+			Email：<input type="text" id="emails" name="emails" />
+		</div>
+		<button type="button" onclick="AddContact();">建立聯絡人Add Contact</button>
+    </body>
+</html>
